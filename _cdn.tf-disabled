@@ -1,0 +1,38 @@
+resource "google_network_services_edge_cache_origin" "hw-origin" {
+  name           = "hello-world-origin"
+  origin_address = "https://${google_app_engine_flexible_app_version.hello-world-v1.service}-dot-${data.google_project.IDME.project_id}.ue.r.appspot.com"
+  description    = "CDN for Hello World app"
+}
+
+resource "google_network_services_edge_cache_service" "hw-cdn-service" {
+  name        = "hello-world-cdn-service"
+  description = "hello world app cdn service"
+  routing {
+    host_rule {
+      hosts        = ["*"]
+      path_matcher = "hw-path"
+    }
+    path_matcher {
+      name = "hw-path"
+      route_rule {
+        priority = 1
+        match_rule {
+          prefix_match = "/"
+        }
+        origin = google_network_services_edge_cache_origin.hw-origin.name
+        route_action {
+          cdn_policy {
+            cache_mode  = "CACHE_ALL_STATIC"
+            default_ttl = "3600s"
+          }
+        }
+        header_action {
+          response_header_to_add {
+            header_name  = "x-cache-status"
+            header_value = "{cdn_cache_status}"
+          }
+        }
+      }
+    }
+  }
+}

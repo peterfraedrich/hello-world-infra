@@ -1,7 +1,7 @@
 resource "google_project_iam_custom_role" "app-engine-role" {
-  role_id     = "app_engine_role"
-  title       = "custom role for app engine"
-  description = "custom role for app engine"
+  role_id     = "app_engine_role_v2"
+  title       = "custom role for app engine v2"
+  description = "custom role for app engine v2"
   permissions = [
     "cloudsql.instances.connect",
     "cloudsql.instances.get",

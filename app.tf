@@ -18,10 +18,8 @@ resource "google_app_engine_flexible_app_version" "hello-world-v1" {
     zip {
       source_url = "https://storage.googleapis.com/${google_storage_bucket.app-bucket.name}/${google_storage_bucket_object.hello-world-source.name}"
     }
-    cloud_build_options {
-      app_yaml_path = "app.yaml"
-    }
   }
+
   liveness_check {
     path = "/health"
   }
@@ -41,7 +39,10 @@ resource "google_app_engine_flexible_app_version" "hello-world-v1" {
   }
 
   handlers {
-    url_regex = "/static/(.*)"
+    url_regex        = "/static/(.*)"
+    auth_fail_action = "AUTH_FAIL_ACTION_REDIRECT"
+    login            = "LOGIN_OPTIONAL"
+    security_level   = "SECURE_OPTIONAL"
     static_files {
       path              = "static/\\1"
       upload_path_regex = "static/.*"
@@ -53,7 +54,4 @@ resource "google_app_engine_flexible_app_version" "hello-world-v1" {
       target_utilization = 0.8
     }
   }
-
-
-
 }

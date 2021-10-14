@@ -4,7 +4,7 @@ resource "google_sql_database" "hello-world-db" {
 }
 
 resource "google_sql_database_instance" "hello-world-db-instance" {
-  name             = "hello-world-db-instance"
+  name             = "hello-world-v1-db-instance"
   database_version = "POSTGRES_13"
   region           = "us-east1"
   settings {

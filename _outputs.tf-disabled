@@ -1,0 +1,7 @@
+output "CDN_IP_V4" {
+  value = google_network_services_edge_cache_service.hw-cdn-service.ipv4_addresses
+}
+
+output "CDN_IP_V6" {
+  value = google_network_services_edge_cache_service.hw-cdn-service.ipv6_addresses
+}
